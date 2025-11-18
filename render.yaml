@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: naino-academy-bot
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash start.sh
+    autoDeploy: true
