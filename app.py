@@ -550,13 +550,21 @@ def webhook():
 def set_webhook():
     """Set webhook using bot.set_webhook (runs on background loop synchronously via future.result)."""
     try:
-        webhook_url = f"https://{request.host}/webhook"
-        future = asyncio.run_coroutine_threadsafe(bot.set_webhook(webhook_url), LOOP)
-        future.result(timeout=15)  # wait for result or raise
+@app.route('/set_webhook', methods=['GET'])
+async def set_webhook():
+    try:
+        # Hardcoded Render URL — safest & stable
+        webhook_url = "https://nainobot-1.onrender.com/webhook"
+
+        # Direct await — NO thread issue
+        await bot.set_webhook(webhook_url)
+
         return jsonify({"status": "success", "webhook_url": webhook_url})
+
     except Exception as e:
         logger.error(f"Set webhook error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
+
 
 @app.route('/health', methods=['GET'])
 def health_check():
