@@ -13,10 +13,6 @@ if [ -z "$BOT_TOKEN_1" ] || [ -z "$CHAT_ID_1" ] || [ -z "$BOT_TOKEN_2" ] || [ -z
 fi
 
 echo "✅ Environment variables loaded successfully"
-echo "🤖 Bot Token 1: ${BOT_TOKEN_1:0:15}..."
-echo "👑 Admin ID: $CHAT_ID_1"
-echo "📊 Bot Token 2: ${BOT_TOKEN_2:0:15}..."
-echo "📍 Data Center Chat ID: $CHAT_ID_2"
 
-# Start the bot
-exec python bot.py
+# Start Flask webhook server
+exec gunicorn app:app --workers 1 --worker-class sync --bind 0.0.0.0:$PORT
